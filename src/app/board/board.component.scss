@@ -6,20 +6,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    // background-image: url('../../assets/mario.png');
+
     &:focus {
             border:1px solid green;
             outline: none;
-            background: #b8b859;
-          
-    }
-    &.focused {
-        border:1px solid green;
-            outline: none;
-            background: #b8b859;
+            // background: #b8b859;
+            background-size: contain;
+            background-image: url('../../assets/mario.png');     
     }
 }
 .board {
   display: flex;
   max-width: 350px;
   flex-wrap: wrap;
+}
+img {
+    width: 40px;
 }

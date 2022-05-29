@@ -25,6 +25,9 @@ export class BoardComponent implements OnInit {
     this.squareBox = new Array(this.dimension).fill(this.dimension%2).map((_, i) => i);
     this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);}} )
     // this.initElement.nativeElement.firstChild.autofocus = true;
+    this.initialIndex = Math.floor(this.dimension/2);
+    
+    this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
     
   }
   ngAfterViewInit() {
