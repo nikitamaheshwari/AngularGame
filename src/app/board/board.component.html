@@ -1,0 +1,17 @@
+<input type="number" [(ngModel)] = "dimension">
+<input type="number" [(ngModel)]= "height">
+{{height}}
+{{ dimension }}
+
+<div class="board">
+  <div *ngFor = "let b of squareBox" >   
+        <div appNavCol 
+            [attr.boxIndex] = "b" 
+            [attr.food] = "randomNumberArray.includes(b,0)" 
+            #boxRef 
+            class="box"> 
+            <span *ngIf = "randomNumberArray.includes(b,0)">ok</span>
+        </div>
+    </div>
+</div>
+{{randomNumberArray}}
