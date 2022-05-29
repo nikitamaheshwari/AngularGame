@@ -25,11 +25,12 @@ export class BoardComponent implements OnInit {
     this.squareBox = new Array(this.dimension).fill(this.dimension%2).map((_, i) => i);
     this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);}} )
     // this.initElement.nativeElement.firstChild.autofocus = true;
+    
   }
   ngAfterViewInit() {
-    // this.initialIndex = Math.floor(this.dimension/2);
+    this.initialIndex = Math.floor(this.dimension/2);
     console.log(this.initialIndex, "index");
-    // this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
+    this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
   }
   ngDoCheck() {
     // on Input change updates square board
