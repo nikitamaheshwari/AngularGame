@@ -1,17 +1,27 @@
-<input type="number" [(ngModel)] = "dimension">
-<input type="number" [(ngModel)]= "height">
-{{height}}
+<input type="number" [(ngModel)] = "dimension" class="input" placeholder="Please enter a square root number">
+<!-- <input type="number" [(ngModel)]= "height"> -->
+<!-- {{height}} -->
+<button (click)="loadSquare(dimension)">Load</button>
 {{ dimension }}
-
-<div class="board">
-  <div *ngFor = "let b of squareBox" >   
-        <div appNavCol 
-            [attr.boxIndex] = "b" 
-            [attr.food] = "randomNumberArray.includes(b,0)" 
-            #boxRef 
-            class="box"> 
-            <span *ngIf = "randomNumberArray.includes(b,0)"><img src="../../assets/muffin.png" ></span>
+<div class="board" [style.width] = "maxwidth" *ngIf = "squareBox.length > 0">
+    <div class="board-row" *ngFor = "let s of squareBox" >
+        <div class="boar-col" *ngFor = "let b of squareBox"  >
+            <div appNavCol 
+                [attr.boxIndex] = "b" 
+                #boxRef 
+                class="box"> 
+                <!-- <span *ngIf = "randomNumberArray.includes(b,0)"><img src="../../assets/muffin.png" ></span> -->
+            </div>
         </div>
     </div>
 </div>
-{{randomNumberArray}}
+{{squareBox}}
+<!-- <div class="boar-col" *ngFor = "let b of squareBox"  >
+    <div appNavCol 
+        [attr.boxIndex] = "b" 
+        [attr.food] = "randomNumberArray.includes(b,0)" 
+        #boxRef 
+        class="box"> 
+        <span *ngIf = "randomNumberArray.includes(b,0)"><img src="../../assets/muffin.png" ></span>
+    </div>
+</div> -->
