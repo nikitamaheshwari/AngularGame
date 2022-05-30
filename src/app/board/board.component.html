@@ -1,27 +1,21 @@
-<input type="number" [(ngModel)] = "dimension" class="input" placeholder="Please enter a square root number">
-<!-- <input type="number" [(ngModel)]= "height"> -->
-<!-- {{height}} -->
-<button (click)="loadSquare(dimension)">Load</button>
-{{ dimension }}
-<div class="board" [style.width] = "maxwidth" *ngIf = "squareBox.length > 0">
-    <div class="board-row" *ngFor = "let s of squareBox" >
-        <div class="boar-col" *ngFor = "let b of squareBox"  >
-            <div appNavCol 
-                [attr.boxIndex] = "b" 
-                #boxRef 
-                class="box"> 
-                <!-- <span *ngIf = "randomNumberArray.includes(b,0)"><img src="../../assets/muffin.png" ></span> -->
+
+<section>
+    <input type="number"  [(ngModel)] = "dimension" id="dimesionInput" class="input" placeholder="Please enter a number" *ngIf = "!(squareBox.length > 0)">
+    <button (click)="loadSquare(dimension)" *ngIf = "!(squareBox.length > 0)">Load</button>
+    <div class="board" [style.width] = "maxwidth" *ngIf = "squareBox.length > 0">
+        <div class="board-row" *ngFor = "let s of squareBox ;let j = index;" >
+            <div class="boar-col" *ngFor = "let b of squareBox ; let i=index;"  >
+                <div appNavCol 
+                    [attr.boxIndex] = "b" 
+                    [attr.food] = "squareBox[i][j]==1"
+                    #boxRef 
+                    class="box"> 
+                    <span *ngIf = "squareBox[i][j] == 1 && currentPos[i][j] != 100"><img src="../../assets/muffin.png" ></span>
+                    <span *ngIf = "currentPos[i][j] == 100"><img src="../../assets/mario.png" ></span>
+                </div>
             </div>
         </div>
     </div>
-</div>
-{{squareBox}}
-<!-- <div class="boar-col" *ngFor = "let b of squareBox"  >
-    <div appNavCol 
-        [attr.boxIndex] = "b" 
-        [attr.food] = "randomNumberArray.includes(b,0)" 
-        #boxRef 
-        class="box"> 
-        <span *ngIf = "randomNumberArray.includes(b,0)"><img src="../../assets/muffin.png" ></span>
-    </div>
-</div> -->
+
+    <!-- <div class="success">Congratulations!! Steps taken to Complete {{this.count}}</div> -->
+</section>

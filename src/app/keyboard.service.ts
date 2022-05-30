@@ -8,6 +8,7 @@ export class KeyboardService {
   keyBoard:Subject<any>= new Subject<any>();
   sendMessage(message:any) {
     this.keyBoard.next(message);
+    console.log(message,"ms");
   }
 
   constructor() { }

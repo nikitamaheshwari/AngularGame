@@ -7,6 +7,8 @@ import { NavColDirective } from '../nav-col.directive';
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
+	currentX:number=0; 
+	currentY:number=0;
   dimension!:number ;
   midDiv:number = 0;
   squareBox:any[] = [];
@@ -16,127 +18,137 @@ export class BoardComponent implements OnInit {
   count : number = 0;
   currentIndexValueInRandomArray!:number;
   initialIndex!:number;
+  currentPos!:any[];
+  currentfoodCount:number = 0;
+  
   @ViewChildren(NavColDirective) inputs!:QueryList<NavColDirective>
   @ViewChild('boxRef') centreBox! : ElementRef<HTMLInputElement>;
 
   constructor(private keyboardService : KeyboardService, private initElement : ElementRef) { 
-	
-	// this.squareBox = new Array(this.columns).fill(0).map(() => new Array(this.columns).fill(0));
-	// console.log(this.squareBox,"sq");
-	// this.squareBox = new Array(this.dimension).fill(this.dimension%2).map((_, i) => i);
-	
-	// this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);} else { alert(this.count)}} )
-
   }
   
   ngOnInit(): void {
-	// this.columns = this.dimension;
-	// console.log(this.columns,"column")
-	// this.midDiv = Math.floor(this.dimension/2);
-	// this.maxwidth = this.columns*70+'px'; 
-	// to generate square board
-	// this.randomNumberArray = this.generateRandomNumber(this.dimension);
-	// this.squareBox = new Array(this.columns).fill(0).map(() => new Array(this.columns).fill(0));
-	// this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);} else { alert(this.count)}} )
-
-	// this.squareBox = new Array(this.dimension).fill(this.dimension%2).map((_, i) => i);
-	// this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);} else { alert(this.count)}} )
-	// this.initialIndex = Math.floor(this.dimension/2);
-
-	// this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
-
-	// this.initElement.nativeElement.firstChild.autofocus = true;
-	// this.initialIndex = Math.floor(this.dimension/2);
-	
-	// this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
 	
   }
   ngOnchanges(){
-	//   this.loadSquare(this.dimension);
   }
-  loadSquare(dimension:any){
-	  console.log("in load",this.squareBox);
+  loadSquare(dimension:any){		
 		this.columns = dimension;
 		this.midDiv = Math.floor(this.dimension/2);
 		this.squareBox = new Array(this.columns).fill(0).map(() => new Array(this.columns).fill(0));
-		this.keyboardService.keyBoard.subscribe(res => { if(this.randomNumberArray.length>0){this.move(res);} else { alert(this.count)}} )
+		this.currentPos = new Array(this.columns).fill(0).map(() => new Array(this.columns).fill(0));
+		this.currentX = Math.floor(this.dimension/2)
+		this.currentY = Math.floor(this.dimension/2)
+		this.currentPos[this.currentX][this.currentY] = 100;
+		for (var i = 0; i< dimension; i++){
+			var x = this.generateRandomNumber(dimension);
+			var y = this.generateRandomNumber(dimension);
+			if( this.currentPos[x][y] != 100 && this.squareBox[x][y] != 1 ){
+				this.squareBox[x][y] = 1
+			} else {
+				var x = this.generateRandomNumber(dimension);
+				var y = this.generateRandomNumber(dimension);
+				this.squareBox[x][y] = 1
+			}
+		}
+		this.keyboardService.keyBoard.subscribe(res => { this.move(res)}  )
 		this.maxwidth = this.columns*70+'px'; 
-		// this.randomNumberArray = this.generateRandomNumber(dimension);
-		this.randomNumberArray  = 4;
-		console.log("in ddf load",this.squareBox);
-
-	// this.maxwidth = this.columns*70+'px'; 
-
-	// this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
-
 	}
-  ngAfterViewInit() {
-	// this.initialIndex = Math.floor(this.dimension/2);
-	// console.log(this.initialIndex, "index");
-	// this.inputs.toArray().findIndex(x=> {if(x.element.nativeElement.getAttribute('boxindex') == this.initialIndex) x.element.nativeElement.focus()} );
-  }
  
-  ngDoCheck() {
-	// on Input change updates square board
-	// this.squareBox = new Array(this.dimension).fill(0).map((_, i) => i);
-  }
   move(object:any) {
-	const inputToArray = this.inputs.toArray();
-	let index = inputToArray.findIndex((x) => x.element == object.element);
-	
+
+	let newX:number;
+	let newY:number;
+	console.log(this.currentfoodCount == this.dimension, "count");
+	if(this.currentfoodCount == this.dimension){
+		alert("Steps taken to collect all the Food :"+ this.count);
+		return;
+	}
 	switch(object.action) {
 	  case "UP" : 
-		index -= this.columns; 
+	  newX  = this.currentX - 1
+	  newY = this.currentY
+	  
+		if (newX < 0){
+			return
+		}
+		this.currentPos[this.currentX][this.currentY] = 0
+		this.currentPos[newX][newY] = 100
+
+		this.currentX = newX
+		this.currentY = newY
 		this.count++;
-		if(this.randomNumberArray.includes(index)){
-		  let currentIndexValueInRandomArray = this.randomNumberArray.indexOf(index);
-		  this.randomNumberArray.splice(currentIndexValueInRandomArray,1);
+		if(this.squareBox[this.currentX][this.currentY] == 1) {
+			this.squareBox[this.currentX][this.currentY] =0;
+			this.currentfoodCount++;
+
 		}
 		break;
 
 	  case "DOWN" : 
-		index += this.columns;
+	 
+	  newX  = this.currentX + 1
+		newY = this.currentY
+	   if (newX > this.dimension-1){
+		   return
+	   }
+	  this.currentPos[this.currentX][this.currentY] = 0
+	  this.currentPos[newX][newY] = 100
+	  this.currentX = newX
+		this.currentY = newY
 		this.count++;
-		if(this.randomNumberArray.includes(index)){
-		  this.currentIndexValueInRandomArray = this.randomNumberArray.indexOf(index);
-		  this.randomNumberArray.splice(this.currentIndexValueInRandomArray,1);
+		if(this.squareBox[this.currentX][this.currentY] == 1) {
+			this.squareBox[this.currentX][this.currentY] = 0;
+
+			this.currentfoodCount++;
 		}
 		break;
 
 	  case "LEFT" : 
-		index--;
+	  newX  = this.currentX
+	  newY = this.currentY - 1
+	 if (newY < 0){
+		 return
+	 }
+	
+		this.currentPos[this.currentX][this.currentY] = 0
+		this.currentPos[newX][newY] = 100
+
+		this.currentX = newX
+		this.currentY = newY
 		this.count++;
-		if(this.randomNumberArray.includes(index)){
-		  this.currentIndexValueInRandomArray = this.randomNumberArray.indexOf(index);
-		  this.randomNumberArray.splice(this.currentIndexValueInRandomArray,1);
+		if(this.squareBox[this.currentX][this.currentY] == 1) {
+
+			this.squareBox[this.currentX][this.currentY] = 0;
+			this.currentfoodCount++;
 		}
 		break;
 	  
 	  case "RIGHT" : 
-		index++;
-		this.count++;
-		if(this.randomNumberArray.includes(index)){
-		  this.currentIndexValueInRandomArray = this.randomNumberArray.indexOf(index);
-		  this.randomNumberArray.splice(this.currentIndexValueInRandomArray,1);
-		}
+		
+		newX = this.currentX
+		newY = this.currentY + 1
+	   if (newY > this.dimension-1){
+		   return
+	   }
+	   this.currentPos[this.currentX][this.currentY] = 0
+	   this.currentPos[newX][newY] = 100
+	   this.currentX = newX
+	   this.currentY = newY
+	   this.count++;
+	   if(this.squareBox[this.currentX][this.currentY] == 1) {
+		this.squareBox[this.currentX][this.currentY] = 0;
+
+		this.currentfoodCount++;
+	}
 		break;
 	  
-	}
-	if(index>=0 && index<this.inputs.length) {
-	  inputToArray[index].element.nativeElement.focus();
-	  
-	}
+	}	
   }
 
   generateRandomNumber(dimension:number) {
-	let countNum = Math.sqrt(dimension);
-	const nums = new Set();
-	while(nums.size !== countNum) {
-	  nums.add(Math.floor(Math.random() * (dimension-1)) + 1);
-	}
-	return [...nums];
-	console.log([...nums]);
-  } 
-
-  
+	let min = 0;
+    let max = Math.floor(dimension);
+    return Math.floor(Math.random() * dimension);
+  }     
 }

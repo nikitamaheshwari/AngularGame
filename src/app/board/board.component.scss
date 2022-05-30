@@ -1,20 +1,16 @@
 .box {
     width: 60px;
     height: 60px;
-    // flex: 15% 0 0;
     border:1px solid #000;
     background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
-    // background-image: url('../../assets/mario.png');
 
     &:focus {
             border:1px solid green;
             outline: none;
-            // background: #b8b859;
             background-size: contain;
-            background-image: url('../../assets/mario.png');     
     }
 }
 .board {
@@ -24,4 +20,53 @@
 }
 img {
     width: 40px;
+}
+input {
+
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  color: black;
+  width: 300px;
+  border: 1px solid #923f3fa1;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+button {
+  font-size: 14px;
+    padding: 10px;
+    background: #923f3fa1;
+    color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    &:focus {
+    border: 1px solid black;
+
+    }
+}
+section {
+  margin-top:80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.success {
+  display: block;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  font-size: 20px;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
